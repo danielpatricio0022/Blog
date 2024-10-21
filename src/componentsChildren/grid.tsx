@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
+import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 const Img = styled('img')({
@@ -12,9 +13,8 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function ComplexGrid() {
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
-    
+export default function ComplexGrid() { 
+    const [posts, setPosts] = useState<Post[]>([]);
 
     interface Post {
         id: number | string;
@@ -23,17 +23,22 @@ export default function ComplexGrid() {
         imageUrl: string | null;
       }
 
-    useEffect(() => {
-    const image = localStorage.getItem('image');
-    if (image) {
-      setImageUrl(image);
-    }
-    }, []);
 
-    useEffect(() => {
-
+    useEffect(() => { // to get the posts from local storage cache
     const cachedPosts = localStorage.getItem('posts');
+        if(cachedPosts){
+            setPosts(JSON.parse(cachedPosts));
+        }
     } , []);
+
+    const removePost = (id: number | string) => {
+        const updatedPosts = posts.filter(post => post.id !== id);
+        setPosts(updatedPosts);
+        localStorage.setItem('posts', JSON.stringify(updatedPosts));
+    };
+
+
+
 
   return (
     <Paper
@@ -45,41 +50,53 @@ export default function ComplexGrid() {
         backgroundColor: '#fff',
         ...theme.applyStyles('dark', {
           backgroundColor: '#1A2027',
+          
         }),
       })}
     >
-      <Grid container spacing={2}>
-        <Grid item>
-          <ButtonBase sx={{ width: 128, height: 128 }}>
-          { imageUrl ? ( <img src={imageUrl} alt="Cache" /> ) : ( <p> No image available </p> )}
-          </ButtonBase>
-        </Grid>
-        <Grid item xs={12} sm container>
-          <Grid item xs container direction="column" spacing={2}>
-            <Grid item xs>
-              <Typography gutterBottom variant="subtitle1" component="div">
-                Standard license
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Full resolution 1920x1080 • JPEG
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                ID: 1030114
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography sx={{ cursor: 'pointer' }} variant="body2">
-                Remove
-              </Typography>
-            </Grid>
-          </Grid>
+      {posts.map((post) => (
+        <Grid container spacing={2} key={post.id} sx={{ borderBottom: '1px solid green' }}>
           <Grid item>
-            <Typography variant="subtitle1" component="div">
-              $19.00
-            </Typography>
+            <ButtonBase sx={{ width: 128, height: 128 }}>
+              {post.imageUrl ? (
+                <img src={post.imageUrl} alt="Cache" />
+              ) : (
+                <p>No image available</p>
+              )}
+            </ButtonBase>
+          </Grid>
+          <Grid item xs={12} sm container>
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs>
+                <Typography gutterBottom variant="subtitle1" component="div">
+                  {post.title}
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                  {post.content}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  ID: {post.id}
+                </Typography>
+              </Grid>
+              <Grid item>
+                    <Button 
+                 sx={{
+                        width: 300,
+                color: 'success.main',
+                '& .MuiSlider-thumb': {
+                borderRadius: '1px',
+                },
+                }}
+            
+                onClick={() => removePost(post.id)}
+>   
+                        Remove
+                    </Button>
+                </Grid>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      ))}
     </Paper>
   );
 }

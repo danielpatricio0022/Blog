@@ -66,6 +66,11 @@ export function FullScreenDialog({
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
+                                inputProps={{ MaxLength: 25 }}
+                                sx={{
+                                    '& .MuiInputBase-input': {
+                                      width: '300px',
+                                    }}}
                             />
                         }
                     />
@@ -80,6 +85,11 @@ export function FullScreenDialog({
                                 name="description"
                                 value={formData.description}
                                 onChange={handleChange}
+                                inputProps={{ MaxLength: 100 }}
+                                sx={{
+                                    '& .MuiInputBase-input': {
+                                      width: '700px',
+                                    }}}
                             />
                         }
                     />
