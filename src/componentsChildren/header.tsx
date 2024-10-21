@@ -9,8 +9,12 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { FullScreenDialog } from "@/components/ui/modal";
+import { Navigate } from "react-router-dom";
+
+
 
 export function HeaderMenu() {
+  const [navigateToHome, setNavigateToHome] = useState(false);
   const [open, setOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -50,7 +54,7 @@ export function HeaderMenu() {
     }
   }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => { // This is the function that is called when the user types in the input fields
     const { name, value, files } = event.target;
     const updatedData = {
       ...formData,
@@ -87,6 +91,14 @@ export function HeaderMenu() {
     handleClose();
   };
 
+  const handleGoHome = () => {
+    setNavigateToHome(true); 
+  };
+
+  if (navigateToHome) {
+    return <Navigate to="/Home" replace={true} />;
+  }
+
   return (
       <>
         <Menubar>
@@ -108,11 +120,13 @@ export function HeaderMenu() {
           <MenubarMenu>
             <MenubarTrigger>Home</MenubarTrigger>
             <MenubarContent>
+
               <MenubarItem asChild>
-                <div id="goHome" onClick={() => console.log('Home clicked')}>
+              <div onClick={handleGoHome}>
                   Go to Home <MenubarShortcut>H</MenubarShortcut>
                 </div>
-              </MenubarItem>
+            </MenubarItem>
+
               <MenubarSeparator />
               <MenubarItem>About</MenubarItem>
               <MenubarSeparator />

@@ -1,0 +1,5 @@
+/* styles.css */
+.HoverCardContent {
+	width: var(--radix-hover-card-trigger-width);
+	max-height: var(--radix-hover-card-content-available-height);
+}

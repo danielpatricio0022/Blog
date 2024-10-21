@@ -1,30 +1,29 @@
-
 import './App.css';
 import { HeaderMenu } from './componentsChildren/header';
 import { CarouselT } from './componentsChildren/carousels';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-<script src="http://localhost:8097"></script>
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { Home } from './components/ui/home'; 
 
 export function App() {
+    const location = useLocation(); 
+
     return (
         <>
-            <Router>
-                <Switch>
-                    <Route exact path="/home" component={Home} />
-                </Switch>
-            </Router>
+            {location.pathname !== "/Home" && (
+                <div className='flex flex-col h-full w-full'>
+                    <div className='bg-gray-800 p-4'>
+                        <HeaderMenu />
+                    </div>
 
-            <div className='flex flex-col h-full w-full'>
-                <div className='bg-gray-800 p-4'>
-                    <HeaderMenu />
+                    <div className='h-[200px] w-full flex flex-grow justify-center items-center'>
+                        <CarouselT />
+                    </div>
                 </div>
-            </div>
+            )}
 
-            <div className='h-[200px] w-full flex flex-grow justify-center items-center'>
-                <CarouselT />
-            </div>
-
+            <Routes>
+                <Route path="/Home" element={<Home />} />
+            </Routes>
         </>
     );
 }
