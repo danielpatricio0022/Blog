@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
+import {useNavigate, Navigate} from "react-router-dom";
+
 
 const Img = styled('img')({
   margin: 'auto',
@@ -15,6 +17,9 @@ const Img = styled('img')({
 
 export default function ComplexGrid() { 
     const [posts, setPosts] = useState<Post[]>([]);
+
+    const navigate = useNavigate();//here
+  
 
     interface Post {
         id: number | string;
@@ -40,63 +45,56 @@ export default function ComplexGrid() {
 
 
 
-  return (
-    <Paper
-      sx={(theme) => ({
-        p: 2,
-        margin: 'auto',
-        maxWidth: 500,
-        flexGrow: 1,
-        backgroundColor: '#fff',
-        ...theme.applyStyles('dark', {
-          backgroundColor: '#1A2027',
-          
-        }),
-      })}
-    >
+ return (
+  <Paper
+    sx={(theme) => ({
+      p: 2,
+      margin: 'auto',
+      maxWidth: '100%', 
+      backgroundColor: '#fff',
+      ...theme.applyStyles('dark', {
+        backgroundColor: '#1A2027',
+      }),
+    })}
+  >
+    <Grid container spacing={3}>
       {posts.map((post) => (
-        <Grid container spacing={2} key={post.id} sx={{ borderBottom: '1px solid green' }}>
-          <Grid item>
-            <ButtonBase sx={{ width: 128, height: 128 }}>
-              {post.imageUrl ? (
-                <img src={post.imageUrl} alt="Cache" />
-              ) : (
-                <p>No image available</p>
-              )}
-            </ButtonBase>
-          </Grid>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography gutterBottom variant="subtitle1" component="div">
-                  {post.title}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  {post.content}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  ID: {post.id}
-                </Typography>
-              </Grid>
-              <Grid item>
-                    <Button 
-                 sx={{
-                        width: 300,
-                color: 'success.main',
-                '& .MuiSlider-thumb': {
-                borderRadius: '1px',
-                },
+        <Grid item xs={12} sm={6} key={post.id} sx={{ borderBottom: '1px solid green' }}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <ButtonBase sx={{ width: 128, height: 128 }} onClick={() => navigate(`/Edit/${post.id}`)}>
+                {post.imageUrl ? (
+                  <img src={post.imageUrl} alt="Cache" />
+                ) : (
+                  <p>No image available</p>
+                )}
+              </ButtonBase>
+            </Grid>
+
+            <Grid item xs>
+              <Typography gutterBottom variant="subtitle1" component="div" sx={{ fontWeight: 'bold' }}>
+                {post.title }
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                {post.content}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                ID: {post.id}
+              </Typography>
+              <Button
+                sx={{
+                  width: 150,
+                  color: 'success.main',
+                  mt: 2,
                 }}
-            
                 onClick={() => removePost(post.id)}
->   
-                        Remove
-                    </Button>
-                </Grid>
+              >
+                Remove
+              </Button>
             </Grid>
           </Grid>
         </Grid>
       ))}
-    </Paper>
-  );
-}
+    </Grid>
+  </Paper>
+);}
