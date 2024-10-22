@@ -2,7 +2,10 @@ import '/src/global.css';
 import { HeaderMenu } from './componentsChildren/header';
 
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import { Home } from './components/ui/home'; 
+import { Home } from './components/ui/homepage'; 
+import { Edit } from './componentsChildren/editpost';
+import ComplexGrid from './componentsChildren/grid';
+
 
 export function App() {
     const location = useLocation(); 
@@ -16,11 +19,12 @@ export function App() {
                     </div>
                 </div>
             )}
-{/* 
-<div className='h-[200px] w-full flex flex-grow justify-center items-center'>
-</div> */}
+
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/Edit/:postId" element={<Edit />} /> 
+                <Route path="/" element={<ComplexGrid/>} />
+                
+                <Route path="/Home" element={<HeaderMenu />} />
             </Routes>
         </>
     );
