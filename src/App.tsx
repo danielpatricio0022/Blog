@@ -24,7 +24,7 @@ export function App() {
                 <Route path="/Edit/:postId" element={<Edit />} /> 
                 <Route path="/" element={<ComplexGrid/>} />
                 
-                <Route path="/Home" element={<HeaderMenu />} />
+                <Route path="/Home" element={<Home />} />
             </Routes>
         </>
     );

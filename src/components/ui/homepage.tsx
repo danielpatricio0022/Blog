@@ -1,5 +1,3 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 interface Post {
   id: string;
@@ -10,9 +8,9 @@ interface Post {
 
 export function Home() {
   return(
-    
+
     <>
-  <h1>hello</h1>)
+  <h1>hello</h1>
   </>
   )
 }
