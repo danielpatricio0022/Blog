@@ -13,8 +13,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {Fade} from '@mui/material';
+import { Box } from '@mui/material';
+import {Modal} from '@mui/material';
 import { useState } from 'react';
-import { Navigate } from "react-router-dom";
+import { Perfil } from '@/componentsChildren/routePerfil';
+
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -49,6 +53,11 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 export default function RecipeReviewCard({ post }: RecipeReviewCardProps) {
     const [expanded, setExpanded] = useState(false);
     const [useNavigateProfile, setNavigateProfile] = useState(false);
+    const [useFavorite, setFavorite] = useState(false);
+
+    const [open, setOpen] = useState(false); ///modal
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false); // modal
   
     const handleExpandClick = () => {
       setExpanded(!expanded);
@@ -57,64 +66,97 @@ export default function RecipeReviewCard({ post }: RecipeReviewCardProps) {
     const handleGoProfile = () => {
       setNavigateProfile(true); 
     };
-    
-    if (useNavigateProfile) {
-      return <Navigate to="/Profile" replace={true} />;
+
+    const handleFavorite = () => {
+      setFavorite(!useFavorite); 
     }
+    
+  
   
     return (
-      <Card sx={{ maxWidth: 345 }}>
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: 'black' }} aria-label="recipe"
-             onClick={handleGoProfile}
-            >
-              <img src="/src/assets/thumb-1920-365264.jpeg" alt="avatar" />
-             
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={post.title} //
-          subheader={post.id} 
-        />
-        {post.imageUrl && (
-          <CardMedia
-            component="img"
-            height="194"
-            image={post.imageUrl}
-            alt={post.title}
+      <>
+        <div></div>
+        
+        <Card sx={{ maxWidth: 345 }}>
+          <CardHeader
+            avatar={
+              <Avatar
+                sx={{ bgcolor: 'black' }}
+                onClick={handleOpen}
+                aria-label="profile-avatar"
+              >
+                <img src="/src/assets/thumb-1920-365264.jpeg" alt="avatar" />
+              </Avatar>
+            }
+            action={
+              <IconButton aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={post.title} 
+            subheader={post.id} 
           />
-        )}
-        <CardContent>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {post.content}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          {post.imageUrl && (
+            <CardMedia
+              component="img"
+              height="194"
+              image={post.imageUrl}
+              alt={post.title}
+            />
+          )}
           <CardContent>
-            <Typography>{post.content}</Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              {post.content}
+            </Typography>
           </CardContent>
-        </Collapse>
-      </Card>
+    
+          <CardActions disableSpacing>
+            <IconButton aria-label="add to favorites" onClick={handleFavorite}>
+              <FavoriteIcon sx={{ color: useFavorite ? 'red' : 'default' }} />
+            </IconButton>
+    
+            <IconButton aria-label="share">
+              <ShareIcon />
+            </IconButton>
+    
+            <IconButton
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+              sx={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: '0.3s' }}
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+    
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography>{post.content}</Typography>
+            </CardContent>
+          </Collapse>
+                    
+                      <Modal open={open} onClose={handleClose}>
+                        <Fade in={open} timeout={{ enter: 500, exit: 300 }}>
+                          <Box
+                            sx={{
+                              width: '60%',
+                              height: '60%',
+                              position: 'absolute',
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              p: 2,
+                              bgcolor: 'black',
+                              borderRadius: 1,
+                              boxShadow: 24,
+                              
+                            }}
+                          >
+                      <Perfil />
+                </Box>
+              </Fade>
+          </Modal>
+        </Card>
+      </>
     );
-  }
+  }    

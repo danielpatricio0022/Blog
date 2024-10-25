@@ -10,13 +10,12 @@ const [useCount, setCount] = useState(0);
 
   return (
     <>
-    <div className=" flex justify-center h-screen bg-black p-5">
       <Paper
         sx={{
 
           p: 4,
           margin: "auto",
-          maxWidth: "60%",
+          maxWidth: "100%",
           backgroundColor: "#fff",
         }}
       >
@@ -62,7 +61,7 @@ const [useCount, setCount] = useState(0);
           </div>
         </div>
       </Paper>
-      </div>
+      
     </>
   );
 }

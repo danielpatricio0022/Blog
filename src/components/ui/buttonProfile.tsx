@@ -12,8 +12,9 @@ import { Alert } from '@mui/material';
 export default function IconLabelButtons() {
   const [isFollowing, setIsFollowing] = React.useState(false);
   const [useLike, setLike] = React.useState(false); 
-  const [showAlert, setShowAlert] = React.useState(false);
+  const [likes, setLikes] = React.useState(25);
 
+  const [showAlert, setShowAlert] = React.useState(false);
   const [followers, setFollowers] = React.useState(100);
   
   const handleClick = () => {
@@ -23,6 +24,7 @@ export default function IconLabelButtons() {
 
   const handleLike = () => { 
     setLike(!useLike); 
+    setLikes(useLike ? likes - 1 : likes + 1); 
   }
 
   const handleMessageClick = () => {
@@ -60,7 +62,7 @@ export default function IconLabelButtons() {
         onClick={handleLike}
         endIcon={useLike ? <ThumbDownAltIcon sx={{ color: 'white' }}  /> : <ThumbUpAltIcon />}   
       >
-        {useLike ? 'Deslike' : 'Like'}
+        {useLike ? `Deslike (${likes})` : `Like (${likes})`} 
       </Button>
 
     </Stack>
